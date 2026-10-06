@@ -1,0 +1,84 @@
+{
+ "2015": {
+  "n": 13,
+  "platforms": {
+   "landsat-8": 13
+  }
+ },
+ "2016": {
+  "n": 10,
+  "platforms": {
+   "landsat-8": 10
+  }
+ },
+ "2017": {
+  "n": 12,
+  "platforms": {
+   "landsat-8": 12
+  }
+ },
+ "2018": {
+  "n": 12,
+  "platforms": {
+   "landsat-8": 12
+  }
+ },
+ "2019": {
+  "n": 12,
+  "platforms": {
+   "landsat-8": 12
+  }
+ },
+ "2020": {
+  "n": 14,
+  "platforms": {
+   "landsat-8": 14
+  }
+ },
+ "2021": {
+  "n": 13,
+  "platforms": {
+   "landsat-8": 13
+  }
+ },
+ "2022": {
+  "n": 21,
+  "platforms": {
+   "landsat-8": 10,
+   "landsat-9": 11
+  }
+ },
+ "2023": {
+  "n": 24,
+  "platforms": {
+   "landsat-8": 12,
+   "landsat-9": 12
+  }
+ },
+ "2024": {
+  "n": 24,
+  "platforms": {
+   "landsat-8": 11,
+   "landsat-9": 13
+  }
+ },
+ "2025": {
+  "n": 21,
+  "platforms": {
+   "landsat-8": 11,
+   "landsat-9": 10
+  }
+ },
+ "_filters": {
+  "platforms": [
+   "landsat-8",
+   "landsat-9"
+  ],
+  "landsat9_from": 2022,
+  "collection_category": "T1",
+  "processing_level": "L2SP",
+  "max_scene_cloud_cover_pct": 20.0,
+  "window": "05-01..06-30"
+ },
+ "_source": "Rebuilt from manifests/run_20261001T124653Z.json; hard protocol filters applied (Landsat 8/9 only, L2SP, T1, cloud < 20%, May-June)."
+}

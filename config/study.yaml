@@ -1,0 +1,87 @@
+# Karachi Urban Heat & Green Cover Observatory - study configuration
+# Every processing run reads this file and records its content hash in the run manifest.
+
+study:
+  name: "Karachi Urban Heat & Green Cover Observatory"
+  protocol_version: "1.0"
+  crs_analysis: "EPSG:32642"   # UTM Zone 42N
+  crs_display: "EPSG:4326"
+
+boundary:
+  source: "GADM 4.1 (Pakistan level 2, Karachi Division)"
+  file: "data/boundaries/karachi-division-gadm41.geojson"
+  license_note: "data/boundaries/SOURCE_NOTE.md"
+  area_check_km2: 3527
+  area_tolerance_pct: 2.0
+
+period:
+  start_year: 2015
+  end_year: 2025
+  # Hot-season window (protocol Section 9.2; decision D3). May-June pre-monsoon.
+  window_start: "05-01"
+  window_end: "06-30"
+
+sensors:
+  # Landsat 9 from its first full operational year (protocol Section 11, D4)
+  use_landsat9_from: 2022
+  exclude_landsat9_before: 2022
+
+selection:
+  collection_category: "T1"
+  processing_level: "L2SP"     # must include surface temperature
+  max_scene_cloud_cover_pct: 20.0
+  require_daytime: true        # SUN_ELEVATION > 0
+
+qa:
+  # QA_PIXEL (CFMASK) masking: keep clear pixels only (bit 6 set, bits 0-5 unset);
+  # bit 7 (water) is kept separately as the water mask.
+  mask_bits: [0, 1, 2, 3, 4, 5]
+  require_clear_bit: 6
+  water_bit: 7
+  # ST_CDIST: exclude pixels within this distance (km) of masked cloud (D6)
+  cloud_distance_km: 1.0
+  # ST_QA: exclude pixels with uncertainty above this (Kelvin) (D6)
+  max_st_qa_kelvin: 2.0
+
+scaling:
+  sr_scale: 0.0000275
+  sr_offset: -0.2
+  st_scale: 0.00341802
+  st_offset: 149.0
+
+indices:
+  ndvi_nir: "SR_B5"
+  ndvi_red: "SR_B4"
+  ndbi_swir: "SR_B6"
+  ndbi_nir: "SR_B5"
+
+composite:
+  reducer: "median"            # sensitivity check with "mean"
+  index_then_composite: true  # compute per-scene NDVI/LST, then composite
+  min_valid_observations: 2   # per grid cell per year (D7)
+
+grid:
+  resolution_m: 1000
+  # spatial blocks for cross-validation (D9): 5 km blocks
+  cv_block_m: 5000
+
+hypotheses:
+  alpha: 0.05
+  hotspot_lst_decile: 0.9     # top decile (D10)
+  lowveg_ndvi_decile: 0.1     # bottom decile (D10)
+  ml_min_cells_per_year: 1000 # D11
+  ml_min_rmse_improvement_pct: 5.0  # D11
+
+data_access:
+  # Protocol amendment (2026-10-01): no Google Earth Engine credentials are
+  # available in this environment, so the identical USGS Collection 2 Level-2
+  # products are accessed through the Microsoft Planetary Computer STAC API
+  # (landsat-c2-l2 collection), which serves the same USGS archive files.
+  stac_api: "https://planetarycomputer.microsoft.com/api/stac/v1"
+  collection: "landsat-c2-l2"
+
+paths:
+  interim: "data/interim"
+  processed: "data/processed"
+  manifests: "manifests"
+  figures: "reports/figures"

@@ -1,0 +1,30 @@
+Karachi Urban Heat Observatory - run on your Mac
+===============================================
+
+You need: Python 3.11 or 3.12 (python.org, not the old system Python).
+
+1. Unzip this file, open Terminal, go into the folder:
+   cd karachi-heat-observatory
+
+2. Create a virtual environment and install:
+   python3 -m venv .venv
+   source .venv/bin/activate
+   pip install -r requirements.txt
+
+3. Start the dashboard:
+   .venv/bin/streamlit run src/app/app.py
+
+4. Open the URL it prints (usually http://localhost:8501) in your browser.
+
+What you get: 5 pages (Overview, Map studio, Compare, Methods and data,
+Research notes), year picker 2015-2025, NDVI/LST/NDBI map layers.
+
+To run the test suite:
+   .venv/bin/python -m pytest tests/ -q
+
+Notes:
+- First launch takes a minute (it loads the 30 m rasters).
+- The data folder is ~700 MB, that is normal.
+- If pip struggles with rasterio, install it first on its own:
+  pip install rasterio==1.5.2
+  then run the full requirements file.

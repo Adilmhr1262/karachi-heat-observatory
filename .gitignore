@@ -1,0 +1,10 @@
+*.pyc
+__pycache__/
+.venv/
+.env
+data/interim/
+data/processed/
+data/fixtures/
+*.tif
+*.tiff
+.DS_Store
